@@ -1,17 +1,23 @@
-const getUsersHandler = (req, res) => {
-  res.status(200).send("Estoy en users");
-};
-const getUsersByIdHandler = (req, res) => {
-  const { id } = req.params;
-  res.status(200).send(`Estoy viendo al detalle del usuario ${id}`);
-};
-const createUsers = (req, res) => {
-  const { name, email, password } = req.body;
+const { createUser, login } = require("../controllers/usersControllers");
 
-  res.status(200).send(`Estoy creando un usuario con los siguientes parametros:
-  name: ${name},
-  email: ${email},
-  password: ${password}`);
+const loginHandler = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await login(email, password);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-module.exports = { getUsersByIdHandler, getUsersHandler, createUsers };
+const createUserHandler = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const newUser = await createUser(name, email, password);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = { loginHandler, createUserHandler };
