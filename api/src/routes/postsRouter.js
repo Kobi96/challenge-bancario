@@ -1,15 +1,16 @@
 const { Router } = require("express");
+const {
+  getPosts,
+  getPostsById,
+  createPosts,
+} = require("../handlers/postsHandlers");
 
 const postsRouter = Router();
 
-postsRouter.get("/", (req, res) => {
-  res.status(200).send("Estoy en posts");
-});
-postsRouter.get("/:id", (req, res) => {
-  res.status(200).send("Estoy viendo a un post en particular");
-});
-postsRouter.post("/", (req, res) => {
-  res.status(201).send("Voy a hacer un post");
-});
+postsRouter.get("/", getPosts);
+
+postsRouter.get("/:id", getPostsById);
+
+postsRouter.post("/", createPosts);
 
 module.exports = postsRouter;
